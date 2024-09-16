@@ -1,0 +1,8 @@
+namespace Breakout
+{
+    class Brick
+    {
+        
+    }
+}
+
