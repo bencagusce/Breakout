@@ -6,25 +6,29 @@ namespace Breakout
 {
     class Program
     {
-        public const int WIDTH = 800;
-        public const int HEIGHT = 600;
+        public const int ScreenW = 800;
+        public const int ScreenH = 600;
         
         static void Main()
         {
-            Clock clock = new Clock();
-            Ball ball = new Ball();
-            
-            RenderWindow window = new RenderWindow(new VideoMode(WIDTH, HEIGHT), "Breakout");
-
-            while (window.IsOpen)
+            using (var window = new RenderWindow(new VideoMode(ScreenW, ScreenH), "Breakout"))
             {
-                float deltaTime = clock.Restart().AsSeconds();
-                window.DispatchEvents();
-                ball.Update(deltaTime);
-                window.Clear(new Color(Color.Blue));
-                ball.Draw(window);
-                window.Display();
+                window.Closed += (o, e) => window.Close();
+                Clock clock = new Clock();
+                Ball ball = new Ball();
+                
+                while (window.IsOpen) 
+                {
+                    float deltaTime = clock.Restart().AsSeconds();
+                    window.DispatchEvents();
+                    ball.Update(deltaTime);
+                    window.Clear(new Color(Color.Blue));
+                    ball.Draw(window);
+                    window.Display();
+                }
+                
             }
+            
         }
     }
 }
