@@ -6,13 +6,14 @@ namespace Breakout
 {
     public class Ball
     {
-        public Sprite sprite;
-        public const float diameter = 20.0f;
-        public const float radius = diameter * 0.5f;
-        public float speed = 100.0f;
-        public Vector2f velocity = new Vector2f(1, 1) / MathF.Sqrt(2.0f); //direction. Uhm no :P
+        public Sprite sprite { private set; get; } 
+        private const float diameter = 20.0f;
+        private const float radius = diameter * 0.5f;
+        private float speed = 200.0f;
+        private Vector2f velocity = new Vector2f(1, 1) / MathF.Sqrt(2.0f); //direction. Uhm no :P
         public Ball()
-        {
+        {            
+
             sprite = new Sprite();
             sprite.Texture = new Texture("./assets/ball.png");
             sprite.Position = new Vector2f(250, 300);
@@ -23,17 +24,25 @@ namespace Breakout
                 diameter / ballTextureSize.X,
                 diameter / ballTextureSize.Y);
         }
-        public void Update(float deltaTime)
+        public void Update(float deltaTime, Paddle paddle, Brick brick)
         {
-            var newPos = sprite.Position;
-            newPos += velocity * deltaTime;
-            sprite.Position = newPos;
-            
-            
+            sprite.Position += velocity * deltaTime;
+            WallBounce();
+            PaddleBounce(paddle);
+            BrickBounce(brick);
+            losingHealth();
         }
 
         public void Draw(RenderWindow target)
         {
+            Text textScore = new Text();
+            Text textHealth = new Text();
+            textScore.Font = new Font("./assets/future.ttf");
+            textHealth.Font = new Font("./assets/future.ttf");
+            textScore.DisplayedString = $"{Program.score}";
+            textHealth.DisplayedString = $"{Program.health}";
+            target.Draw(textScore);
+            target.Draw(textHealth);
             target.Draw(sprite);
         }
 
@@ -44,7 +53,18 @@ namespace Breakout
                 velocity.Y * normal.Y
             ));
         }
-
+        private bool losingHealth()
+        {
+            if (sprite.Position.Y > 600)
+            {
+                Program.health --;
+                if (Program.health == 0)
+                {
+                    Program.gameOver = true;
+                }
+            }
+            return true;
+        }
         private bool WallBounce()
         {
             bool didBounce = false;
@@ -56,7 +76,8 @@ namespace Breakout
             }
             else if (sprite.Position.X - radius <= 0)
             {
-                sprite.Position -= new Vector2f(sprite.Position.X - radius, 0);
+                // sprite.Position -= new Vector2f(sprite.Position.X - radius, 0);
+                sprite.Position = new Vector2f(radius, sprite.Position.Y);
                 velocity.X = -velocity.X;
                 didBounce = true;
             }
@@ -70,6 +91,54 @@ namespace Breakout
 
             return didBounce;
         }
-        
+        private bool PaddleBounce(Paddle paddle)
+        {
+            // Paddle is divided into 1 rectangle and 2 semicircles
+            float rectangleWidth = paddle.width - paddle.height;
+            Vector2f leftSemicircleCenter = paddle.sprite.Position - new Vector2f(rectangleWidth * 0.5f, 0);
+            Vector2f rightSemicircleCenter = paddle.sprite.Position + new Vector2f(rectangleWidth * 0.5f, 0);
+            // Rectangle collision
+            if (
+                MathF.Abs(paddle.sprite.Position.X - sprite.Position.X) <= rectangleWidth &&
+                MathF.Abs(paddle.sprite.Position.Y - sprite.Position.Y) <= paddle.height * 0.5f + radius
+            )
+            {
+                sprite.Position = new Vector2f(sprite.Position.X, paddle.sprite.Position.Y - (radius + paddle.height * 0.5f));
+                velocity.Y = -velocity.Y;
+            }
+            // left semicircle collision
+            else if ((sprite.Position - leftSemicircleCenter).Length() <= radius + paddle.height * 0.5f)
+            {
+                
+            }
+            // right semicircle collision
+            else if ((sprite.Position - rightSemicircleCenter).Length() <= radius + paddle.height * 0.5f)
+            {
+                
+            }
+            return false;
+        }
+        private bool BrickBounce(Brick brick)
+        {
+            bool brickHit = false;
+            for (int i = 0; i < brick.positions.Count; i++) 
+            {
+                var pos = brick.positions[i];
+                if (Collision.CircleRectangle(
+                    sprite.Position, radius,
+                    pos, brick.size, out Vector2f hit))
+                {
+                    sprite.Position += hit;
+                    brick.positions.RemoveAt(i);
+                    i = 0; // Check all again since ball was moved
+                    brickHit = true;
+                    if (brickHit == true)
+                    {
+                        Program.score += 100;
+                    }
+                }
+            }
+            return brickHit;
+        }
     }
 }
