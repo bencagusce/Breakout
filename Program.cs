@@ -20,6 +20,11 @@ namespace Breakout
             Paddle paddle = new Paddle();
             Brick brick = new Brick();
 
+            Text textScore = new Text();
+            Text textHealth = new Text();
+            textScore.Font = new Font("./assets/future.ttf");
+            textHealth.Font = new Font("./assets/future.ttf");
+
             void lost()
             {
                 if (gameOver == true)
@@ -45,11 +50,19 @@ namespace Breakout
             {
                 float deltaTime = clock.Restart().AsSeconds();
                 window.DispatchEvents();
+
+                // Update
                 paddle.Update(deltaTime, moveRight, moveLeft); 
                 ball.Update(deltaTime, paddle, brick);
+                textScore.DisplayedString = $"{Program.score}";
+                textHealth.DisplayedString = $"{Program.health}";
+
+                // Draw
                 window.Clear(new Color(Color.Blue));
                 ball.Draw(window);
                 paddle.Draw(window);
+                window.Draw(textScore);
+                window.Draw(textHealth);
                 window.Display();
             }
         }

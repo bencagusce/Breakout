@@ -35,14 +35,6 @@ namespace Breakout
 
         public void Draw(RenderWindow target)
         {
-            Text textScore = new Text();
-            Text textHealth = new Text();
-            textScore.Font = new Font("./assets/future.ttf");
-            textHealth.Font = new Font("./assets/future.ttf");
-            textScore.DisplayedString = $"{Program.score}";
-            textHealth.DisplayedString = $"{Program.health}";
-            target.Draw(textScore);
-            target.Draw(textHealth);
             target.Draw(sprite);
         }
 
