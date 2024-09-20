@@ -6,36 +6,42 @@ namespace Breakout
 {
     public class Bricks
     {
-        private Sprite sprite;
-        public List<Vector2f> positions;
+        public List<Sprite> sprites;
         public Vector2f size = new Vector2f(50.0f, 10.0f);
         public Bricks()
         {
-            sprite = new Sprite();
-            sprite.Texture = new Texture("./assets/tileBlue.png");
-            size.Y = size.X * ((float)sprite.Texture.Size.Y / (float)sprite.Texture.Size.X);
-            positions = new List<Vector2f>();
+            Texture[] textures =
+            {
+                new Texture("./assets/tileBlue.png"),
+                new Texture("./assets/tileGreen.png"),
+                new Texture("./assets/tilePink.png")
+            };
+            
+            size.Y = size.X * ((float)textures[0].Size.Y / (float)textures[0].Size.X);
+            sprites = new List<Sprite>();
             for (int i = -7; i <= 7; i++)
             {
                 for (int j = -7; j <= 5; j++)
                 {
-                    var pos = new Vector2f(
+                    Sprite sprite = new Sprite();
+                    sprite.Texture = textures[(j + 7) % 3];
+                    sprite.Position = new Vector2f(
                         Program.ScreenW * 0.5f + i * 53.1f,
                         Program.ScreenH * 0.3f + j * 24.0f);
-                    positions.Add(pos);
+                    sprite.Origin = 0.5f * (Vector2f)sprite.Texture.Size;
+                    sprite.Scale = new Vector2f(
+                        size.X / sprite.Texture.Size.X,
+                        size.Y / sprite.Texture.Size.Y
+                    );
+                    
+                    sprites.Add(sprite);
                 }
             }
-            sprite.Origin = 0.5f * (Vector2f)sprite.Texture.Size;
-            sprite.Scale = new Vector2f(
-                size.X / sprite.Texture.Size.X,
-                size.Y / sprite.Texture.Size.Y
-            );
         }
         public void Draw(RenderTarget target)
         {
-            for (int i = 0; i < positions.Count; i++)
+            foreach (Sprite sprite in sprites)
             {
-                sprite.Position = positions[i];
                 target.Draw(sprite);
             }
         }
