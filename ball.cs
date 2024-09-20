@@ -28,7 +28,7 @@ namespace Breakout
         {
             sprite.Position += velocity * deltaTime;
             WallBounce();
-            PaddleBounce(paddle);
+            PaddleBounce(paddle, deltaTime);
             BrickBounce(brick);
             losingHealth();
         }
@@ -83,8 +83,11 @@ namespace Breakout
 
             return didBounce;
         }
-        private bool PaddleBounce(Paddle paddle)
+        private bool PaddleBounce(Paddle paddle, float deltaTime)
         {
+            // If the ball is way higher than the paddle return false
+            if (paddle.sprite.Position.Y - sprite.Position.Y > radius + (paddle.height * 0.5) + (speed * deltaTime)) return false;
+
             // Paddle is divided into 1 rectangle and 2 semicircles
             float rectangleWidth = paddle.width - paddle.height;
             Vector2f leftSemicircleCenter = paddle.sprite.Position - new Vector2f(rectangleWidth * 0.5f, 0);
@@ -99,12 +102,23 @@ namespace Breakout
                 velocity.Y = -velocity.Y;
             }
             // left semicircle collision
-            else if ((sprite.Position - leftSemicircleCenter).Length() <= radius + paddle.height * 0.5f)
+            else if ((sprite.Position - leftSemicircleCenter).Length() <= radius + (paddle.height * 0.5f) + (speed * deltaTime))
             {
-                
+                // Ray marching
+                // should be a helper function
+                float maxDistance = speed * deltaTime;
+                float currentDistance = 0f;
+                float radiuses = radius + (paddle.height * 0.5f);
+                float ray1 = (sprite.Position - leftSemicircleCenter).Length() - radiuses;
+                float ray2;
+                float approximate0 = 0.01f;
+                while (ray1 > approximate0)
+                {
+                    // Problem with moving sprite twice
+                }
             }
             // right semicircle collision
-            else if ((sprite.Position - rightSemicircleCenter).Length() <= radius + paddle.height * 0.5f)
+            else if ((sprite.Position - rightSemicircleCenter).Length() <= radius + (paddle.height * 0.5f) + (speed * deltaTime))
             {
                 
             }
