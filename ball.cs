@@ -30,7 +30,7 @@ namespace Breakout
             WallBounce();
             PaddleBounce(paddle, deltaTime);
             BrickBounce(brick);
-            losingHealth();
+            LoosingHealth();
         }
 
         public void Draw(RenderWindow target)
@@ -45,17 +45,19 @@ namespace Breakout
                 velocity.Y * normal.Y
             ));
         }
-        private bool losingHealth()
+        private bool LoosingHealth()
         {
             if (sprite.Position.Y > 600)
             {
                 Program.health --;
                 if (Program.health == 0)
                 {
-                    Program.gameOver = true;
+                    // Program.gameOver = true;
+                    return true;
                 }
             }
-            return true;
+
+            return false;
         }
         private bool WallBounce()
         {
@@ -102,8 +104,10 @@ namespace Breakout
                 velocity.Y = -velocity.Y;
             }
             // left semicircle collision
-            else if ((sprite.Position - leftSemicircleCenter).Length() <= radius + (paddle.height * 0.5f) + (speed * deltaTime))
+            else if ((sprite.Position - leftSemicircleCenter).Length() <= radius + (paddle.height * 0.5f))
             {
+                // Undo last movement
+                // sprite 
                 // Ray marching
                 // should be a helper function
                 float maxDistance = speed * deltaTime;
@@ -118,7 +122,7 @@ namespace Breakout
                 }
             }
             // right semicircle collision
-            else if ((sprite.Position - rightSemicircleCenter).Length() <= radius + (paddle.height * 0.5f) + (speed * deltaTime))
+            else if ((sprite.Position - rightSemicircleCenter).Length() <= radius + (paddle.height * 0.5f))
             {
                 
             }

@@ -12,6 +12,7 @@ namespace Breakout
         public static bool gameOver = false;
         public static int score = 0;
         public static int health = 3;
+        
         static void Main()
         {
             window.Closed += (o, e) => window.Close();
@@ -25,13 +26,7 @@ namespace Breakout
             textScore.Font = new Font("./assets/future.ttf");
             textHealth.Font = new Font("./assets/future.ttf");
 
-            void lost()
-            {
-                if (gameOver == true)
-                {
-                    
-                }
-            }
+            
             //movePaddle
             bool moveRight = false;
             bool moveLeft = false;
