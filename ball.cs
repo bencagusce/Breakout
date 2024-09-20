@@ -16,7 +16,7 @@ namespace Breakout
 
             sprite = new Sprite();
             sprite.Texture = new Texture("./assets/ball.png");
-            sprite.Position = new Vector2f(250, 300);
+            sprite.Position = new Vector2f(250, 400);
             velocity *= speed;
             Vector2f ballTextureSize = (Vector2f)sprite.Texture.Size;
             sprite.Origin = 0.5f * ballTextureSize;
@@ -29,7 +29,7 @@ namespace Breakout
             sprite.Position += velocity * deltaTime;
             WallBounce();
             PaddleBounce(paddle, deltaTime);
-            // BrickBounce(brick);
+            BrickBounce(bricks, deltaTime);
             return LoosingHealth();
         }
 
@@ -131,27 +131,63 @@ namespace Breakout
             }
             return false;
         }
-        // private bool BrickBounce(Brick brick)
-        // {
-        //     bool brickHit = false;
-        //     for (int i = 0; i < brick.positions.Count; i++) 
-        //     {
-        //         var pos = brick.positions[i];
-        //         if (Helpers.CircleRectangleCollision(
-        //             sprite, brick
-        //             pos, brick.size, out Vector2f hit))
-        //         {
-        //             sprite.Position += hit;
-        //             brick.positions.RemoveAt(i);
-        //             i = 0; // Check all again since ball was moved
-        //             brickHit = true;
-        //             if (brickHit == true)
-        //             {
-        //                 Program.score += 100;
-        //             }
-        //         }
-        //     }
-        //     return brickHit;
-        // }
+        private void BrickBounce(Bricks bricks, float deltaTime)
+        {
+            for (int i = 0; i < bricks.sprites.Count(); i++)
+            {
+                // Collision by Emil Forslund
+                if (Collision.CircleRectangle(
+                        sprite.Position, radius,
+                        bricks.sprites[i].Position, bricks.size, out Vector2f v))
+                {
+                    // Hit top or bottom
+                    if (MathF.Abs(sprite.Position.X - bricks.sprites[i].Position.X) < bricks.size.X * 0.5f)
+                    {
+                        velocity.Y = -velocity.Y;
+                        bool down = sprite.Position.Y - bricks.sprites[i].Position.Y > 0;
+                        sprite.Position = new Vector2f(sprite.Position.X,bricks.sprites[i].Position.Y + radius + bricks.size.Y * (down ? 0.5f : -0.5f));
+                    }
+                    // Hit from left or right
+                    else if (MathF.Abs(sprite.Position.Y - bricks.sprites[i].Position.Y) < bricks.size.Y * 0.5f)
+                    {
+                        velocity.X = -velocity.X;
+                        bool right = sprite.Position.X - bricks.sprites[i].Position.X > 0;
+                        sprite.Position = new Vector2f(bricks.sprites[i].Position.X + radius + bricks.size.X * (right ? 0.5f : -0.5f), sprite.Position.Y);
+                    }
+                    // Hit a corner
+                    else
+                    {
+                        // Undo last movement
+                        sprite.Position -= velocity * deltaTime;
+
+                        // Find closest corner
+                        Vector2f corner = bricks.sprites[i].Position +
+                                          new Vector2f(bricks.size.X * 0.5f, bricks.size.Y * 0.5f);
+                        // cornerCoefficients
+                        Vector2f[] cC =
+                            { new Vector2f(-0.5f, 0.5f), new Vector2f(0.5f, -0.5f), new Vector2f(-0.5f, -0.5f) };
+                        for (int j = 0; j < 3; j++)
+                        {
+                            Vector2f newCorner = bricks.sprites[i].Position +
+                                                 new Vector2f(bricks.size.X * cC[j].X, bricks.size.Y * cC[j].Y);
+                            if ((sprite.Position - newCorner).Length() < (sprite.Position - corner).Length())
+                                corner = newCorner;
+                        }
+
+                        // Ray marching to find the most physically correct collision point
+                        sprite.Position = Helpers.RayMarchFindCollisionPoint(
+                            sprite.Position, radius,
+                            corner, 0f,
+                            velocity.Normalized());
+
+                        // Reflect ball
+                        velocity = Helpers.Reflect(velocity, (sprite.Position - corner).Normalized());
+                    }
+
+                    Program.score += 100;
+                    bricks.sprites.RemoveAt(i);
+                }
+            }
+        }
     }
 }

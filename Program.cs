@@ -6,7 +6,6 @@ namespace Breakout
 {
     class Program
     {
-        public static Sprite sprite { private set; get; }
         public const int ScreenW = 800;
         public const int ScreenH = 600;
         public static RenderWindow window = new RenderWindow(new VideoMode(ScreenW, ScreenH), "Breakout");
@@ -37,7 +36,7 @@ namespace Breakout
             
             
             //gameover screen
-            sprite = new Sprite();
+            Sprite sprite = new Sprite();
             sprite.Texture = new Texture("./assets/gameOver.png");
             
             //Vector2f restartTextureSize = textRestart.Position;
