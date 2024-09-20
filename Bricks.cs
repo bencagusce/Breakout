@@ -27,7 +27,7 @@ namespace Breakout
                     sprite.Texture = textures[(j + 7) % 3];
                     sprite.Position = new Vector2f(
                         Program.ScreenW * 0.5f + i * 53.1f,
-                        Program.ScreenH * 0.3f + j * 24.0f);
+                        Program.ScreenH * 0.3f + j * 26.5f);
                     sprite.Origin = 0.5f * (Vector2f)sprite.Texture.Size;
                     sprite.Scale = new Vector2f(
                         size.X / sprite.Texture.Size.X,
