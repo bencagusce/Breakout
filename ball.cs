@@ -35,7 +35,7 @@ namespace Breakout
             
             sprite.Position += velocity * deltaTime;
             WallBounce();
-            PaddleBounce(paddle, deltaTime);
+            PaddleBounce(paddle, bricks, deltaTime);
             BrickBounce(bricks, deltaTime);
             return LoosingHealth();
         }
@@ -93,7 +93,7 @@ namespace Breakout
 
             return didBounce;
         }
-        private bool PaddleBounce(Paddle paddle, float deltaTime)
+        private bool PaddleBounce(Paddle paddle, Bricks bricks, float deltaTime)
         {
             // If the ball is way higher than the paddle return false
             if (paddle.sprite.Position.Y - sprite.Position.Y > radius + (paddle.height * 0.5) + (speed * deltaTime)) return false;
@@ -111,6 +111,9 @@ namespace Breakout
             {
                 sprite.Position = new Vector2f(sprite.Position.X, paddle.sprite.Position.Y - (radius + paddle.height * 0.5f));
                 velocity.Y = -velocity.Y;
+                
+                // If we're out of bricks spawn new
+                if (bricks.sprites.Count() == 0) bricks = new Bricks();
             }
             // left semicircle collision
             else if ((sprite.Position - leftSemicircleCenter).Length() <= radius + (paddle.height * 0.5f))
@@ -126,6 +129,9 @@ namespace Breakout
                 
                 // Reflect ball
                 velocity = Helpers.Reflect(velocity, (sprite.Position - leftSemicircleCenter).Normalized());
+                
+                // If we're out of bricks spawn new
+                if (bricks.sprites.Count() == 0) bricks = new Bricks();
             }
             // right semicircle collision
             else if ((sprite.Position - rightSemicircleCenter).Length() <= radius + (paddle.height * 0.5f))
@@ -141,6 +147,9 @@ namespace Breakout
                 
                 // Reflect ball
                 velocity = Helpers.Reflect(velocity, (sprite.Position - rightSemicircleCenter).Normalized());
+                
+                // If we're out of bricks spawn new
+                if (bricks.sprites.Count() == 0) bricks = new Bricks();
             }
             return false;
         }
