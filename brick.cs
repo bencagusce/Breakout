@@ -15,15 +15,15 @@ namespace Breakout
             sprite.Texture = new Texture("./assets/tileBlue.png");
             size.Y = size.X * ((float)sprite.Texture.Size.Y / (float)sprite.Texture.Size.X);
             positions = new List<Vector2f>();
-            for (int i = -2; i <= 2; i++)
+            for (int i = -7; i <= 7; i++)
             {
-                for (int j = -2; j <= 2; j++)
+                for (int j = -7; j <= 5; j++)
                 {
                     var pos = new Vector2f(
-                        Program.ScreenW * 0.5f + i * 96.0f,
-                        Program.ScreenH * 0.3f + j * 48.0f);
+                        Program.ScreenW * 0.5f + i * 53.1f,
+                        Program.ScreenH * 0.3f + j * 24.0f);
                     positions.Add(pos);
-                    }
+                }
             }
             sprite.Origin = 0.5f * (Vector2f)sprite.Texture.Size;
             sprite.Scale = new Vector2f(
