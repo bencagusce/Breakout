@@ -3,10 +3,10 @@
     - [X] Bounces correctly on the edges of the screen, and on the paddle and bricks
 - [X] A paddle
     - [X] Can be moved by the player along the bottom of the screen
-- [ ] Bricks
+- [X] Bricks
     - [X] Can be destroyed by the ball
     - [X] Player gains points from destroying bricks
-    - [ ] Spawn a new set of bricks when all bricks have been destroyed
+    - [X] Spawn a new set of bricks when all bricks have been destroyed
     - [X] Resets when the game is lost
 - [X] Health
     - [X] Player loses health when the ball reaches the bottom of the screen
