@@ -9,8 +9,9 @@ namespace Breakout
         public Sprite sprite { private set; get; } 
         private const float diameter = 20.0f;
         private const float radius = diameter * 0.5f;
-        private float speed = 200.0f;
-        private Vector2f velocity = new Vector2f(1, 1) / MathF.Sqrt(2.0f); //direction. Uhm no :P
+        private float speed = 600.0f;
+        private Vector2f velocity = new Vector2f(1, 1) / MathF.Sqrt(2.0f);
+        
         public Ball()
         {            
 
@@ -26,6 +27,12 @@ namespace Breakout
         }
         public bool Update(float deltaTime, Paddle paddle, Bricks bricks)
         {
+            if (Program.ridingPaddle)
+            {
+                RidingPaddle(paddle);
+                return false;
+            }
+            
             sprite.Position += velocity * deltaTime;
             WallBounce();
             PaddleBounce(paddle, deltaTime);
@@ -43,16 +50,22 @@ namespace Breakout
         {
             if (sprite.Position.Y > 600)
             {
-                Program.health --;
+                Program.health--;
+                Program.ridingPaddle = true;
                 if (Program.health == 0)
                 {
-                    
-                    // Program.gameOver = true;
+                    Program.score = 0;
+                    Program.health = 3;
                     return true;
                 }
             }
 
             return false;
+        }
+
+        private void RidingPaddle(Paddle paddle)
+        {
+            sprite.Position = new Vector2f(paddle.sprite.Position.X, (Program.ScreenH - 2.0f * paddle.height) + -20.0f);
         }
         private bool WallBounce()
         {
