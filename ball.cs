@@ -167,14 +167,14 @@ namespace Breakout
                     {
                         velocity.Y = -velocity.Y;
                         bool down = sprite.Position.Y - bricks.sprites[i].Position.Y > 0;
-                        sprite.Position = new Vector2f(sprite.Position.X,bricks.sprites[i].Position.Y + radius + bricks.size.Y * (down ? 0.5f : -0.5f));
+                        sprite.Position = new Vector2f(sprite.Position.X,bricks.sprites[i].Position.Y + (radius + bricks.size.Y) * (down ? 0.5f : -0.5f));
                     }
                     // Hit from left or right
                     else if (MathF.Abs(sprite.Position.Y - bricks.sprites[i].Position.Y) < bricks.size.Y * 0.5f)
                     {
                         velocity.X = -velocity.X;
                         bool right = sprite.Position.X - bricks.sprites[i].Position.X > 0;
-                        sprite.Position = new Vector2f(bricks.sprites[i].Position.X + radius + bricks.size.X * (right ? 0.5f : -0.5f), sprite.Position.Y);
+                        sprite.Position = new Vector2f(bricks.sprites[i].Position.X + (radius + bricks.size.X) * (right ? 0.5f : -0.5f), sprite.Position.Y);
                     }
                     // Hit a corner
                     else
