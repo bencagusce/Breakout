@@ -1,23 +1,26 @@
+using SFML.Graphics;
 using SFML.System;
 
 namespace Breakout
 {
     public class Helpers
     {
-        // public static bool CircleRectangleCollision(
-        //     Vector2f circlePos, float circleR,
-        //     Vector2f rectPos, Vector2f rectDim,
-        //     out Vector2f newCirclePos
-        // )
-        // {
-        //
-        //     
-        //     
-        //     // Rect to rect collision
-        //     
-        //     newCirclePos = new Vector2f(0,0);
-        //     return false;
-        // }
+        // Algorithm borrowed from Peter's collision lecture
+        public static bool CircleRectangleCollision(CircleShape circle, RectangleShape rect)
+        {
+            Vector2f difference = circle.Position - rect.Position;
+            float absDiffX = MathF.Abs(difference.X);
+            float absDiffY = MathF.Abs(difference.Y);
+            if (absDiffX > (rect.Origin.X + circle.Radius)) { return false; }
+            if (absDiffY > (rect.Origin.Y + circle.Radius)) { return false; }
+            if (absDiffX <= rect.Origin.X) { return true; }
+            if (absDiffY <= rect.Origin.Y) { return true; }
+            float cornerDistance = MathF.Sqrt(
+                (absDiffX - rect.Origin.X) * (absDiffX - rect.Origin.X) +
+                (absDiffY - rect.Origin.Y) * (absDiffY - rect.Origin.Y));
+            return cornerDistance <= circle.Radius;
+        }
+        
 
         // public static bool RaymarchCollisionCircleCircle(
         //     Vector2f position1, float radius1,

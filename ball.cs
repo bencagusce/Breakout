@@ -29,7 +29,7 @@ namespace Breakout
             sprite.Position += velocity * deltaTime;
             WallBounce();
             PaddleBounce(paddle, deltaTime);
-            BrickBounce(brick);
+            // BrickBounce(brick);
             return LoosingHealth();
         }
 
@@ -131,27 +131,27 @@ namespace Breakout
             }
             return false;
         }
-        private bool BrickBounce(Brick brick)
-        {
-            bool brickHit = false;
-            for (int i = 0; i < brick.positions.Count; i++) 
-            {
-                var pos = brick.positions[i];
-                if (Collision.CircleRectangle(
-                    sprite.Position, radius,
-                    pos, brick.size, out Vector2f hit))
-                {
-                    sprite.Position += hit;
-                    brick.positions.RemoveAt(i);
-                    i = 0; // Check all again since ball was moved
-                    brickHit = true;
-                    if (brickHit == true)
-                    {
-                        Program.score += 100;
-                    }
-                }
-            }
-            return brickHit;
-        }
+        // private bool BrickBounce(Brick brick)
+        // {
+        //     bool brickHit = false;
+        //     for (int i = 0; i < brick.positions.Count; i++) 
+        //     {
+        //         var pos = brick.positions[i];
+        //         if (Helpers.CircleRectangleCollision(
+        //             sprite, brick
+        //             pos, brick.size, out Vector2f hit))
+        //         {
+        //             sprite.Position += hit;
+        //             brick.positions.RemoveAt(i);
+        //             i = 0; // Check all again since ball was moved
+        //             brickHit = true;
+        //             if (brickHit == true)
+        //             {
+        //                 Program.score += 100;
+        //             }
+        //         }
+        //     }
+        //     return brickHit;
+        // }
     }
 }

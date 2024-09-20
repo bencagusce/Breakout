@@ -23,7 +23,7 @@ namespace Breakout
                         Program.ScreenW * 0.5f + i * 96.0f,
                         Program.ScreenH * 0.3f + j * 48.0f);
                     positions.Add(pos);
-                    }
+                }
             }
             sprite.Origin = 0.5f * (Vector2f)sprite.Texture.Size;
             sprite.Scale = new Vector2f(
