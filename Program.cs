@@ -12,6 +12,7 @@ namespace Breakout
         public static int score = 0;
         public static int health = 3;
         public static bool gameOver = false;
+        public static bool ridingPaddle = true;
 
         
         static void Main()
@@ -27,10 +28,13 @@ namespace Breakout
             Text textScore = new Text();
             Text textHealth = new Text();
             Text textRestart = new Text();
+            Text textStart = new Text();
             textScore.Font = font;
             textHealth.Font = font;
             textRestart.Font = font;
+            textStart.Font = font;
             textRestart.Position = new Vector2f(10, 550);
+            textStart.Position = new Vector2f(10, 550);
             textScore.Position = new Vector2f(10, 0);
             textHealth.Position = new Vector2f(770, 0);
             
@@ -39,14 +43,11 @@ namespace Breakout
             Sprite sprite = new Sprite();
             sprite.Texture = new Texture("./assets/gameOver.png");
             
-            //Vector2f restartTextureSize = textRestart.Position;
-            //textRestart.Origin = 0.5f * restartTextureSize;
-            
-            
             //movePaddle
             bool moveRight = false;
             bool moveLeft = false;
             bool spacePressed = false;
+            bool spaceBuffered = true;
             window.KeyPressed += (s, e) =>
             {
                 if (e.Code == Keyboard.Key.Right) moveRight = true;
@@ -57,7 +58,11 @@ namespace Breakout
             {
                 if (e.Code == Keyboard.Key.Right) moveRight = false;
                 else if (e.Code == Keyboard.Key.Left) moveLeft = false;
-                else if (e.Code == Keyboard.Key.Space) spacePressed = false;
+                else if (e.Code == Keyboard.Key.Space)
+                {
+                    spacePressed = false;
+                    spaceBuffered = true;
+                }
             };
             
             
@@ -71,6 +76,7 @@ namespace Breakout
                     if (spacePressed)
                     {
                         gameOver = false;
+                        spaceBuffered = false;
                     }
                     textRestart.DisplayedString = ("Restart by pressing Space");
                     // Draw
@@ -78,6 +84,7 @@ namespace Breakout
                     window.Draw(sprite);
                     window.Draw(textRestart);
                     window.Display();
+
                 }
                 else
                 {
@@ -89,12 +96,21 @@ namespace Breakout
                     gameOver = ball.Update(deltaTime, paddle, bricks);
                     textScore.DisplayedString = $"{Program.score}";
                     textHealth.DisplayedString = $"{Program.health}";
+                    textStart.DisplayedString = "Press Space";
+                    if (ridingPaddle)
+                    {
+                        if (spacePressed && spaceBuffered)
+                        {
+                            ridingPaddle = false;
+                        }
+                    }
     
                     // Draw
                     window.Clear(new Color(Color.Blue));
                     ball.Draw(window);
                     paddle.Draw(window);
                     bricks.Draw(window);
+                    if (ridingPaddle) window.Draw(textStart);
                     window.Draw(textScore);
                     window.Draw(textHealth);
                     window.Display();

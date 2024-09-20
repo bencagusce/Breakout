@@ -13,10 +13,10 @@
     - [ ] The game is lost (and reset) when health reaches 0
 - [ ] Points
     - [ ] Resets when the game is lost
-- [ ] Graphics
-    - [ ] All of the above game elements has a functional graphical representation
-    - [ ] Both Textures and Fonts are used
-    - [ ] Collisions accounts for the graphical representation
+- [X] Graphics
+    - [X] All of the above game elements has a functional graphical representation
+    - [X] Both Textures and Fonts are used
+    - [X] Collisions accounts for the graphical representation
 - [ ] At least one of the Bonus Features:
     - [ ] Create a pattern of tiles in different colors without creating one class for each color.
     - [ ] Whenever the ball goes outside, make the ball stand still on top of the paddle until the user hit “Space”.
