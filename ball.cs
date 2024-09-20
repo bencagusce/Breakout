@@ -38,13 +38,7 @@ namespace Breakout
             target.Draw(sprite);
         }
 
-        private void Reflect(Vector2f normal)
-        {
-            velocity -= normal * (2 * (
-                velocity.X * normal.X +
-                velocity.Y * normal.Y
-            ));
-        }
+        
         private bool LoosingHealth()
         {
             if (sprite.Position.Y > 600)
@@ -95,9 +89,10 @@ namespace Breakout
             float rectangleWidth = paddle.width - paddle.height;
             Vector2f leftSemicircleCenter = paddle.sprite.Position - new Vector2f(rectangleWidth * 0.5f, 0);
             Vector2f rightSemicircleCenter = paddle.sprite.Position + new Vector2f(rectangleWidth * 0.5f, 0);
+            
             // Rectangle collision
             if (
-                MathF.Abs(paddle.sprite.Position.X - sprite.Position.X) <= rectangleWidth &&
+                MathF.Abs(paddle.sprite.Position.X - sprite.Position.X) <= rectangleWidth * 0.5f &&
                 MathF.Abs(paddle.sprite.Position.Y - sprite.Position.Y) <= paddle.height * 0.5f + radius
             )
             {
@@ -108,24 +103,31 @@ namespace Breakout
             else if ((sprite.Position - leftSemicircleCenter).Length() <= radius + (paddle.height * 0.5f))
             {
                 // Undo last movement
-                // sprite 
-                // Ray marching
-                // should be a helper function
-                float maxDistance = speed * deltaTime;
-                float currentDistance = 0f;
-                float radiuses = radius + (paddle.height * 0.5f);
-                float ray1 = (sprite.Position - leftSemicircleCenter).Length() - radiuses;
-                float ray2;
-                float approximate0 = 0.01f;
-                while (ray1 > approximate0)
-                {
-                    // Problem with moving sprite twice
-                }
+                sprite.Position -= velocity * deltaTime;
+                
+                // Ray marching to find the most physically correct collision point
+                sprite.Position = Helpers.RayMarchFindCollisionPoint(
+                    sprite.Position, radius,
+                    leftSemicircleCenter, paddle.height * 0.5f,
+                    velocity.Normalized());
+                
+                // Reflect ball
+                velocity = Helpers.Reflect(velocity, (sprite.Position - leftSemicircleCenter).Normalized());
             }
             // right semicircle collision
             else if ((sprite.Position - rightSemicircleCenter).Length() <= radius + (paddle.height * 0.5f))
             {
+                // Undo last movement
+                sprite.Position -= velocity * deltaTime;
                 
+                // Ray marching to find the most physically correct collision point
+                sprite.Position = Helpers.RayMarchFindCollisionPoint(
+                    sprite.Position, radius,
+                    rightSemicircleCenter, paddle.height * 0.5f,
+                    velocity.Normalized());
+                
+                // Reflect ball
+                velocity = Helpers.Reflect(velocity, (sprite.Position - rightSemicircleCenter).Normalized());
             }
             return false;
         }
