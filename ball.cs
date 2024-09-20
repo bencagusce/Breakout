@@ -9,7 +9,7 @@ namespace Breakout
         public Sprite sprite { private set; get; } 
         private const float diameter = 20.0f;
         private const float radius = diameter * 0.5f;
-        private float speed = 600.0f;
+        private float speed = 200.0f;
         private Vector2f velocity = new Vector2f(1, 1) / MathF.Sqrt(2.0f);
         
         public Ball()

@@ -19,9 +19,9 @@ namespace Breakout
             
             size.Y = size.X * ((float)textures[0].Size.Y / (float)textures[0].Size.X);
             sprites = new List<Sprite>();
-            for (int i = -7; i <= 7; i++)
+            for (int i = -6; i <= 6; i++)
             {
-                for (int j = -7; j <= 5; j++)
+                for (int j = -6; j <= 5; j++)
                 {
                     Sprite sprite = new Sprite();
                     sprite.Texture = textures[(j + 7) % 3];
