@@ -17,11 +17,11 @@ namespace Breakout
             positions = new List<Vector2f>();
             for (int i = -7; i <= 7; i++)
             {
-                for (int j = -7; j <= 5; j++)
+                for (int j = -6; j <= 3; j++)
                 {
                     var pos = new Vector2f(
                         Program.ScreenW * 0.5f + i * 53.1f,
-                        Program.ScreenH * 0.3f + j * 24.0f);
+                        Program.ScreenH * 0.29f + j * 26.5f);
                     positions.Add(pos);
                 }
             }
