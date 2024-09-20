@@ -1,11 +1,11 @@
 #The game needs to contain (at least):
-- [ ] A ball
-    - [ ] Bounces correctly on the edges of the screen, and on the paddle and bricks
+- [X] A ball
+    - [X] Bounces correctly on the edges of the screen, and on the paddle and bricks
 - [X] A paddle
     - [X] Can be moved by the player along the bottom of the screen
 - [ ] Bricks
-    - [ ] Can be destroyed by the ball
-    - [ ] Player gains points from destroying bricks
+    - [X] Can be destroyed by the ball
+    - [X] Player gains points from destroying bricks
     - [ ] Spawn a new set of bricks when all bricks have been destroyed
     - [ ] Resets when the game is lost
 - [ ] Health
