@@ -24,7 +24,7 @@ namespace Breakout
                 diameter / ballTextureSize.X,
                 diameter / ballTextureSize.Y);
         }
-        public bool Update(float deltaTime, Paddle paddle, Brick brick)
+        public bool Update(float deltaTime, Paddle paddle, Bricks bricks)
         {
             sprite.Position += velocity * deltaTime;
             WallBounce();

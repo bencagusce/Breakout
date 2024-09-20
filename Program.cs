@@ -21,7 +21,7 @@ namespace Breakout
             Clock clock = new Clock();
             Ball ball = new Ball();
             Paddle paddle = new Paddle();
-            Brick brick = new Brick();
+            Bricks bricks = new Bricks();
 
             Font font = new Font("./assets/future.ttf");
             
@@ -87,7 +87,7 @@ namespace Breakout
     
                     // Update
                     paddle.Update(deltaTime, moveRight, moveLeft);
-                    gameOver = ball.Update(deltaTime, paddle, brick);
+                    gameOver = ball.Update(deltaTime, paddle, bricks);
                     textScore.DisplayedString = $"{Program.score}";
                     textHealth.DisplayedString = $"{Program.health}";
     
@@ -95,7 +95,7 @@ namespace Breakout
                     window.Clear(new Color(Color.Blue));
                     ball.Draw(window);
                     paddle.Draw(window);
-                    brick.Draw(window);
+                    bricks.Draw(window);
                     window.Draw(textScore);
                     window.Draw(textHealth);
                     window.Display();
