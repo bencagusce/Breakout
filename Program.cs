@@ -94,9 +94,7 @@ namespace Breakout
     
                     // Update
                     paddle.Update(deltaTime, moveRight, moveLeft);
-                    bool resetBricks = false;
-                    gameOver = ball.Update(deltaTime, paddle, bricks, out resetBricks);
-                    if (resetBricks) bricks = new Bricks();
+                    gameOver = ball.Update(deltaTime, paddle, bricks);
                     textScore.DisplayedString = $"{Program.score}";
                     textHealth.DisplayedString = $"{Program.health}";
                     textStart.DisplayedString = "Press Space";
