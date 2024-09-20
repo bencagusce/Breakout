@@ -7,17 +7,17 @@
     - [X] Can be destroyed by the ball
     - [X] Player gains points from destroying bricks
     - [ ] Spawn a new set of bricks when all bricks have been destroyed
-    - [ ] Resets when the game is lost
-- [ ] Health
+    - [X] Resets when the game is lost
+- [X] Health
     - [X] Player loses health when the ball reaches the bottom of the screen
-    - [ ] The game is lost (and reset) when health reaches 0
-- [ ] Points
-    - [ ] Resets when the game is lost
+    - [X] The game is lost (and reset) when health reaches 0
+- [X] Points
+    - [X] Resets when the game is lost
 - [X] Graphics
     - [X] All of the above game elements has a functional graphical representation
     - [X] Both Textures and Fonts are used
     - [X] Collisions accounts for the graphical representation
-- [ ] At least one of the Bonus Features:
-    - [ ] Create a pattern of tiles in different colors without creating one class for each color.
-    - [ ] Whenever the ball goes outside, make the ball stand still on top of the paddle until the user hit “Space”.
+- [X] At least one of the Bonus Features:
+    - [X] Create a pattern of tiles in different colors without creating one class for each color.
+    - [X] Whenever the ball goes outside, make the ball stand still on top of the paddle until the user hit “Space”.
     - [ ] Add a power-up that drops 10% of the time a tile is destroyed. If the paddle takes the power-up before it goes outside, the paddle grows wider for four seconds before returning to its regular size.

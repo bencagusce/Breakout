@@ -77,6 +77,7 @@ namespace Breakout
                     {
                         gameOver = false;
                         spaceBuffered = false;
+                        bricks = new Bricks();
                     }
                     textRestart.DisplayedString = ("Restart by pressing Space");
                     // Draw
