@@ -24,13 +24,13 @@ namespace Breakout
                 diameter / ballTextureSize.X,
                 diameter / ballTextureSize.Y);
         }
-        public void Update(float deltaTime, Paddle paddle, Brick brick)
+        public bool Update(float deltaTime, Paddle paddle, Brick brick)
         {
             sprite.Position += velocity * deltaTime;
             WallBounce();
             PaddleBounce(paddle, deltaTime);
             BrickBounce(brick);
-            LoosingHealth();
+            return LoosingHealth();
         }
 
         public void Draw(RenderWindow target)
@@ -52,6 +52,7 @@ namespace Breakout
                 Program.health --;
                 if (Program.health == 0)
                 {
+                    
                     // Program.gameOver = true;
                     return true;
                 }
